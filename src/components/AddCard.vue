@@ -1,20 +1,138 @@
-<script>
+<script>;
   export default {
     name: 'AddCard',
+    emits: ['create-card'],
     props:{
-    }
+      cardsList: {
+        type: Array,
+        default: [],
+      },
+    },
+    data(){
+      return {
+        card: {
+          id: this.cardsList,
+          name: '',
+          job: '',
+          palette: {
+              name: '',
+              bgcolor: '#000000',
+              lineColor: '#ffffff',
+              fontColor: '#ffffff',
+          },
+        },
+      }
+    },
+
+    methods: {
+      openModal(){
+        this.$refs.dialog.showModal();
+      },
+      closeModal(){
+        this.$refs.dialog.close();
+      },
+      handleSubmit(e){
+        this.$emit('create-card', this.card);
+        this.closeModal();
+      },
+    },
   }
 </script>
 
 
 <template>
+  <button id="show" class="add__btn" @click="openModal">
+  </button>
+  <dialog class="modal" ref="dialog">
+    <form action="" @submit.prevent="handleSubmit" class="modal__form">
+      <label for="name" class="modal__label">
+        <span class="modal__span" ref="span">Name</span>
+        <input type="text" class="modal__input" id="name" minlength="3" maxlength="10" required v-model="card.name">
+      </label>
+      <label for="job" class="modal__label">
+        <span class="modal__span">Job</span>
+        <input type="text" class="modal__input" id="job" minlength="3" maxlength="30" required v-model="card.job">
+      </label>
+
+       <label for="" class="modal__label">
+        <span class="modal__span">Background Color</span>
+        <div class="color__container">
+          <input type="color" class="modal__input" id="back-color" v-model="card.palette.bgcolor">
+          <span class="modal__color-selected">
+            {{card.palette.bgcolor}}
+          </span>
+
+        </div>
+      </label>
+
+      <label for="" class="modal__label">
+        <span class="modal__span">Line Color</span>
+        <div class="color__container">
+          <input type="color" class="modal__input" id="line-color" v-model="card.palette.lineColor">
+          <span class="modal__color-selected">
+            {{card.palette.lineColor}}
+          </span>
+        </div>
+      </label>
+
+      <label for="" class="modal__label">
+        <span class="modal__span">Font Color</span>
+        <div class="color__container">
+          <input type="color" class="modal__input" id="font-color" v-model="card.palette.fontColor">
+          <span class="modal__color-selected">
+            {{card.palette.fontColor}}
+          </span>
+        </div>
+      </label>
+
+      <div class="modal__buttons">
+        <button type="button" id="cancel" class="modal__btn" @click="closeModal">Cancel</button>
+        <button type="submit" class="modal__btn" id="create">Create Card</button>
+      </div>
+    </form>
+  </dialog>
 </template>
 
 
 
 
-<style>
+<style scoped>
+  .add__btn {
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50%;
+    border: 0;
+    background: rgb(153, 42, 180);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+  }
 
+  .add__btn::before, .add__btn::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: rgb(255, 255, 255);
+  }
+
+  .add__btn::before{
+    width: 5px;
+    height: 60%;
+  }
+
+  .add__btn::after{
+    width: 60%;
+    height: 5px;
+  }
+
+  .add__btn:active {
+    transform: scale(1.1);
+  }
   /* for modal */
   dialog.modal{
     width: 50%;
@@ -57,6 +175,15 @@
     font-weight: 400;
     outline: none;
     border: 1px dashed rgb(153, 42, 180);
+
+  }
+
+  input:invalid:required {
+    border: 2px dashed red;
+  }
+
+  input:valid:required {
+    border: 2px dashed rgb(153, 42, 180);
   }
 
   .modal__input[type=color] {
