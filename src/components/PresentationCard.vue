@@ -1,94 +1,62 @@
 <script>
-
-  const palettesAvailable = [
-    {
-      name: 'lofi',
-      bgcolor: '#cfbaf0',
-      lineColor1: '#ffcfd2',
-      lineColor2: '#f1c0e8',
-      fontColor: '#fff'
-    },
-    {
-      name: 'cold',
-      bgcolor: '#005f73',
-      lineColor1: '#94d2bd',
-      lineColor2: '#e9d8a6',
-      fontColor: '#fff'
-    },
-    {
-      name: 'warm',
-      bgcolor: '#ff9f1c',
-      lineColor1: '#ffd6a5',
-      lineColor2: '#ffadad',
-      fontColor: '#fff'
-    },
+  const palettes = [
+          {
+            id: 0,
+            name: 'lofi',
+            bgcolor: '#cfbaf0',
+            lineColor: '#ffcfd2',
+            fontColor: '#fff'
+          },
+          {
+            id:1,
+            name: 'cold',
+            bgcolor: '#005f73',
+            lineColor: '#94d2bd',
+            fontColor: '#fff'
+          },
+          {
+            id:2,
+            name: 'warm',
+            bgcolor: '#ff9f1c',
+            lineColor: '#ffd6a5',
+            fontColor: '#fff'
+          },
   ];
-
-  const getPalette = (namePalette) => {
-    if(!namePalette) return undefined;
-    const palette = palettesAvailable.find(item => namePalette.toLowerCase() === item.name);
-    return palette;
-  }
 
   export default {
     name: 'PresentationCard',
     props: {
       name: {
         type: String,
-        default: 'Durmon',
+        default: 'Somebody',
         required: false,
         validator: value => value.length > 3
       },
 
       job: {
         type: String,
-        required: true,
+        default: 'Some job',
+        required: false,
       },
 
       paletteName: {
-        type:String,
+        type:String || Object,
         required: false,
-        validator: palette => getPalette(palette)
       },
-
-      paletteObj: {
-        type: Object,
-        required: false,
-      }
     },
+
     data() {
       return {
-        palette: getPalette(this.paletteName) ?? this.paletteObj ?? getPalette('lofi'),
+        palette: this.getPalette(this.paletteName),
       }
     },
     computed: {},
-    methods: {},
-
-    //ciclo de viuda funciones
-    created(){
-      // check the $props, $data and $el
-      console.groupCollapsed('%c PresentationCard created() ','color: green; font-weight: bold;');
-      console.log('created');
-      console.log(this.$data);
-      console.log(this.$el);
-      console.groupEnd();
+    methods: {
+      getPalette(palette){
+        if(typeof palette === 'string') return palettes.find(p => p.name === palette);
+        return palette;
+      },
     },
-
-    mounted(){
-      // check the $props, $data and $el
-      console.groupCollapsed('%c PresentationCard created() ','color: orange; font-weight: bold;');
-      console.log('mounted');
-      console.log(this.$data);
-      console.log(this.$el);
-      console.groupEnd();
-
-      // change colors (this could be a function)
-      // const card = this.$el;
-      // card.style.background = `
-      //   linear-gradient(-45deg, transparent 10%,${this.palette.lineColor1} 10% 20%, transparent 20% 25%, ${this.palette.lineColor1} 25% 35%, transparent 35% 60%, ${this.palette.lineColor1} 60% 70%, transparent 70% 75%, ${this.palette.lineColor1} 75% 85%, transparent 85%)`;
-      // card.style.color = this.palette.bgcolor;
-      // card.style.color = `${this.palette.fontColor}`;
-    }
   }
 </script>
 
@@ -117,7 +85,7 @@
     color: v-bind(palette.fontColor);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
     animation: dance 1.5s infinite alternate;
-    background: linear-gradient(-45deg, transparent 10%, v-bind(palette.lineColor1) 10% 20%, transparent 20% 25%, v-bind(palette.lineColor1) 25% 35%, transparent 35% 60%, v-bind(palette.lineColor1) 60% 70%, transparent 70% 75%, v-bind(palette.lineColor1) 75% 85%, transparent 85%);
+    background: linear-gradient(-45deg, transparent 10%, v-bind(palette.lineColor) 10% 20%, transparent 20% 25%, v-bind(palette.lineColor) 25% 35%, transparent 35% 60%, v-bind(palette.lineColor) 60% 70%, transparent 70% 75%, v-bind(palette.lineColor) 75% 85%, transparent 85%);
     background-color: v-bind(palette.bgcolor);
   }
 
