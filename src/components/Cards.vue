@@ -1,25 +1,25 @@
 <script>
+import PresentationCard from "./PresentationCard.vue";
   export default {
     name: 'Cards',
+    components: {
+      PresentationCard
+    },
     props:{
+      cardsList: {
+        type: Array,
+        default: [],
+      },
     }
   }
 </script>
 
 
 <template>
-  <section class="cards">
-
-  </section>
+  <div class="cards" v-for="card in cardsList" v-bind:key="card.id">
+    <PresentationCard v-bind:card="card" :name="card.name" v-bind:job="card.job" v-bind:paletteName="card.palette"></PresentationCard>
+  </div>
 </template>
 
-<style scoped>
-  .cards {
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    place-content: center;
-    justify-items: center;
-  }
+<style>
 </style>
