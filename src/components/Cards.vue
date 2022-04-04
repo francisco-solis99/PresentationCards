@@ -10,6 +10,15 @@ import PresentationCard from "./PresentationCard.vue";
         type: Array,
         default: [],
       },
+
+      mounted(){
+        console.log('Cards mounted');
+      },
+
+      updated(){
+        console.log('Cards updated');
+      },
+
     }
   }
 </script>

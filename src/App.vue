@@ -17,7 +17,7 @@
 
     methods: {
       addCard(card){
-        card.id = this.cardsList.length;
+        card.id = this.copyCards.length;
         this.cardsList.push(card);
         localStorage.setItem('cardsList', JSON.stringify(this.cardsList));
         this.copyCards = [...this.cardsList, ...this.defaultUsers];
@@ -27,10 +27,6 @@
     created(){
       console.log('App created');
       this.copyCards = [...this.cardsList, ...this.defaultUsers];
-    },
-
-    updated(){
-      console.log('App updated');
     },
 
     computed: {
