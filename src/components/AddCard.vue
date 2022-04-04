@@ -3,15 +3,11 @@
     name: 'AddCard',
     emits: ['create-card'],
     props:{
-      cardsList: {
-        type: Array,
-        default: [],
-      },
     },
     data(){
       return {
         card: {
-          id: this.cardsList,
+          id: 0,
           name: '',
           job: '',
           palette: {
@@ -32,8 +28,18 @@
         this.$refs.dialog.close();
       },
       handleSubmit(e){
-        this.$emit('create-card', this.card);
+        const copyCard = JSON.parse(JSON.stringify(this.card));
+        this.$emit('create-card', copyCard);
+        this.cleanFields();
         this.closeModal();
+      },
+      cleanFields(){
+        this.card.name = '';
+        this.card.job = '';
+        this.card.palette.name = '';
+        this.bgcolor = '#000000';
+        this.lineColor = '#ffffff';
+        this.fontColor = '#ffffff';
       },
     },
   }
@@ -46,7 +52,7 @@
   <dialog class="modal" ref="dialog">
     <form action="" @submit.prevent="handleSubmit" class="modal__form">
       <label for="name" class="modal__label">
-        <span class="modal__span" ref="span">Name</span>
+        <span class="modal__span">Name</span>
         <input type="text" class="modal__input" id="name" minlength="3" maxlength="10" required v-model="card.name">
       </label>
       <label for="job" class="modal__label">
@@ -57,11 +63,10 @@
        <label for="" class="modal__label">
         <span class="modal__span">Background Color</span>
         <div class="color__container">
-          <input type="color" class="modal__input" id="back-color" v-model="card.palette.bgcolor">
+          <input type="color" class="modal__input" id="back-color" v-model="card.palette.bgcolor" v-once>
           <span class="modal__color-selected">
             {{card.palette.bgcolor}}
           </span>
-
         </div>
       </label>
 

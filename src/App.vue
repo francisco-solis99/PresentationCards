@@ -10,11 +10,36 @@
 
     data(){
       return {
-        cardsList: [
+        cardsList: localStorage.getItem('cardsList') ? JSON.parse(localStorage.getItem('cardsList')) : [],
+        copyCards: [],
+      }
+    },
+
+    methods: {
+      addCard(card){
+        card.id = this.cardsList.length;
+        this.cardsList.push(card);
+        localStorage.setItem('cardsList', JSON.stringify(this.cardsList));
+        this.copyCards = [...this.cardsList, ...this.defaultUsers];
+      },
+    },
+
+    created(){
+      console.log('App created');
+      this.copyCards = [...this.cardsList, ...this.defaultUsers];
+    },
+
+    updated(){
+      console.log('App updated');
+    },
+
+    computed: {
+      defaultUsers() {
+        return [
           {
             id: 0,
             name: 'Juan',
-            job: 'Developer',
+            job: 'Digital Creator',
             palette: 'lofi',
           },
           {
@@ -26,23 +51,11 @@
           {
             id: 2,
             name: 'Francisco',
-            job: 'Developer',
+            job: 'Frontend Developer',
             palette: 'warm',
           },
-        ],
-        copyCards: [],
+        ];
       }
-    },
-
-    methods: {
-      addCard(card){
-        this.cardsList.push(card);
-        this.copyCards = [...this.cardsList];
-      },
-    },
-
-    created(){
-      this.copyCards = [...this.cardsList];
     },
   }
 </script>
@@ -54,9 +67,9 @@
     <h1 class="app__title">Presentation Cards </h1>
   </header>
   <section class="cards">
-    <Cards :cardsList="copyCards"/>
+    <Cards v-bind:cardsList="copyCards"/>
   </section>
-  <AddCard v-on:create-card="addCard" :cardsList="copyCards"></AddCard>
+  <AddCard v-on:create-card="addCard"></AddCard>
 </template>
 
 
@@ -86,3 +99,26 @@
   }
 
 </style>
+
+
+
+<!-- cardsList: [
+          {
+            id: 0,
+            name: 'Juan',
+            job: 'Digital Creator',
+            palette: 'lofi',
+          },
+          {
+            id: 1,
+            name: 'Richard',
+            job: 'Backend Developer',
+            palette: 'cold',
+          },
+          {
+            id: 2,
+            name: 'Francisco',
+            job: 'Fronteend Developer',
+            palette: 'warm',
+          },
+        ], -->
